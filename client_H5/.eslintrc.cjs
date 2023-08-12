@@ -9,7 +9,7 @@ module.exports = {
     "react/function-component-definition": 0,
     "react/react-in-jsx-scope": 0,
     "import/prefer-default-export": 0,
-    "react-hooks/exhaustive-deps": 1,
+    "react-hooks/exhaustive-deps": "warn",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {

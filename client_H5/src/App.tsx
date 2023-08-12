@@ -4,11 +4,11 @@ import { useMutation, useQuery } from "@apollo/client";
 import { FIND, UPDATE } from "./graphql/demo";
 
 import "./App.css";
+import { Button, Form, ImageUploader, Input } from "antd-mobile";
+import { useUploadOSS } from "./hooks/useUploadOSS";
 
 const App: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [desc, setDesc] = useState<string>("");
-
+  const uploadHandler = useUploadOSS();
   const { loading, data } = useQuery(FIND, {
     variables: {
       id: "4fc75020-25bb-4d68-9111-018b0f9426e1",
@@ -17,16 +17,13 @@ const App: React.FC = () => {
 
   const [update] = useMutation(UPDATE);
 
-  const onChangeNameHandler = (v: React.ChangeEvent<HTMLInputElement>) => setName(v.target.value);
-  const onChangeDescHandler = (v: React.ChangeEvent<HTMLInputElement>) => setDesc(v.target.value);
-
-  const handleClick = () => {
+  const handleClick = (values: any) => {
+    console.log(values);
     update({
       variables: {
         id: "73d0dce3-40c9-4ad1-92ad-f5734f1db9ca",
         params: {
-          name,
-          desc,
+          ...values,
           account: "ooo",
         },
       },
@@ -37,17 +34,26 @@ const App: React.FC = () => {
     <div>
       data: {JSON.stringify(data)}
       <p>loading:{`${loading}`}</p>
-      <p>
-        name:
-        <input onChange={onChangeNameHandler} />
-      </p>
-      <p>
-        desc:
-        <input onChange={onChangeDescHandler} />
-      </p>
-      <button type="button" onClick={handleClick}>
-        Click
-      </button>
+      <Form
+        layout="horizontal"
+        onFinish={handleClick}
+        footer={
+          <Button block type="submit" color="primary" size="large">
+            提交
+          </Button>
+        }
+      >
+        <Form.Item name="name" label="姓名">
+          <Input />
+        </Form.Item>
+        <Form.Item name="desc" label="描述">
+          <Input />
+          {/* <input onChange={onChangeDescHandler} /> */}
+        </Form.Item>
+        <Form.Item>
+          <ImageUploader upload={uploadHandler} />
+        </Form.Item>
+      </Form>
     </div>
   );
 };

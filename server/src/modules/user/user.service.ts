@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from './models/user.entity';
 import { DeepPartial, Repository } from 'typeorm';
-import { async } from 'rxjs';
 
 @Injectable()
 export class UserService {
