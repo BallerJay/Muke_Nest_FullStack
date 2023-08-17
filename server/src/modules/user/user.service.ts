@@ -48,4 +48,27 @@ export class UserService {
     });
     return res;
   }
+
+  // 通过手机号查询验证码
+  async findCodeByMobile(tel: string): Promise<User> {
+    const res = await this.UserRepository.findOne({
+      where: {
+        tel,
+      },
+    });
+    return res;
+  }
+
+  // 更新某个用户的验证码
+  async updateCodeById(id: string, code: string): Promise<boolean> {
+    const res = await this.UserRepository.update(id, {
+      code,
+      codeCreateTSAt: new Date(),
+    });
+    if (res && res.affected > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

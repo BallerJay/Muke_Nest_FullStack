@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as dayjs from 'dayjs';
 import * as OSS from 'ali-oss';
+import { ACCESS_KEY, ACCESS_KEY_SECRET } from 'src/common/constants/aliyun';
 
 import { OSSType } from './dto/oss.type';
 
@@ -8,8 +9,8 @@ import { OSSType } from './dto/oss.type';
 export class OSSService {
   async getSignature(): Promise<OSSType> {
     const config = {
-      accessKeyId: 'LTAI5t8BpUZFrUAuau8dPyKs',
-      accessKeySecret: 'rHtqRaSf7JKPzBExp3r6W5OKTY9sd9',
+      accessKeyId: ACCESS_KEY,
+      accessKeySecret: ACCESS_KEY_SECRET,
       bucket: 'muke-nest',
       dir: 'static/',
     };

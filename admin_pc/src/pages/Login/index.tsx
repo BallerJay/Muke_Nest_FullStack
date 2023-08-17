@@ -1,21 +1,37 @@
-import { AlipayOutlined, LockOutlined, MobileOutlined, TaobaoOutlined, UserOutlined, WeiboOutlined } from "@ant-design/icons";
-import { LoginFormPage, ProFormCaptcha, ProFormCheckbox, ProFormText } from "@ant-design/pro-components";
-import { Button, Divider, message, Space, Tabs } from "antd";
-import type { CSSProperties } from "react";
 import { useState } from "react";
+import { LockOutlined, MobileOutlined, UserOutlined } from "@ant-design/icons";
+import { LoginFormPage, ProFormCaptcha, ProFormCheckbox, ProFormText } from "@ant-design/pro-components";
+import { message, Space, Tabs } from "antd";
+import { useMutation } from "@apollo/client";
+
 import styles from "./index.module.less";
+import { LOGIN, SEND_CODE_MSG } from "../../graphql/auth";
 
 type LoginType = "phone" | "account";
 
-const iconStyles: CSSProperties = {
-  color: "rgba(0, 0, 0, 0.2)",
-  fontSize: "18px",
-  verticalAlign: "middle",
-  cursor: "pointer",
-};
+interface IValue {
+  tel: string;
+  code: string;
+}
 
-export default () => {
+const Login: React.FC = () => {
+  const [run] = useMutation(SEND_CODE_MSG);
+  const [login] = useMutation(LOGIN);
   const [loginType, setLoginType] = useState<LoginType>("phone");
+
+  const handleLogin = async (values: IValue) => {
+    const res = await login({
+      variables: values,
+    });
+
+    if (res.data.login) {
+      message.success("登录成功🎉🎉");
+      return;
+    }
+
+    message.error("登录失败");
+  };
+
   return (
     <div className={styles.container}>
       <LoginFormPage
@@ -23,6 +39,7 @@ export default () => {
         logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
         title="Github"
         subTitle="全球最大的代码托管平台"
+        onFinish={handleLogin}
       >
         <Tabs centered activeKey={loginType} onChange={activeKey => setLoginType(activeKey as LoginType)}>
           <Tabs.TabPane key={"account"} tab={"账号密码登录"} />
@@ -67,7 +84,7 @@ export default () => {
                 size: "large",
                 prefix: <MobileOutlined className={"prefixIcon"} />,
               }}
-              name="mobile"
+              name="tel"
               placeholder={"手机号"}
               rules={[
                 {
@@ -95,15 +112,27 @@ export default () => {
                 }
                 return "获取验证码";
               }}
-              name="captcha"
+              phoneName="tel"
+              name="code"
               rules={[
                 {
                   required: true,
                   message: "请输入验证码！",
                 },
               ]}
-              onGetCaptcha={async () => {
-                message.success("获取验证码成功！验证码为：1234");
+              onGetCaptcha={async (tel: string) => {
+                const res = await run({
+                  variables: {
+                    tel: tel,
+                  },
+                });
+                console.log(res, "aaa");
+
+                if (res.data.sendCodeMsg) {
+                  message.success("获取验证码成功🎉🎉");
+                } else {
+                  message.error("获取验证码失败");
+                }
               }}
             />
           </>
@@ -128,3 +157,5 @@ export default () => {
     </div>
   );
 };
+
+export default Login;
