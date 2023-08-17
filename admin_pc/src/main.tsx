@@ -1,11 +1,14 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
-import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+
 import { client } from './utils/apollo';
+import Router from '@/routes/index';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={client}>
-    <App />
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   </ApolloProvider>,
 );

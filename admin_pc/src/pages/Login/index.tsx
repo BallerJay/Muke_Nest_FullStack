@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       variables: values,
     });
 
-    if (res.data.login) {
+    if (res.data.login.code === 200) {
       message.success('登录成功🎉🎉');
       return;
     }
@@ -127,7 +127,7 @@ const Login: React.FC = () => {
                 });
                 console.log(res, 'aaa');
 
-                if (res.data.sendCodeMsg) {
+                if (res.data.sendCodeMsg.code === 200) {
                   message.success('获取验证码成功🎉🎉');
                 } else {
                   message.error('获取验证码失败');

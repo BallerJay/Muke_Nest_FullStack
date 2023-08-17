@@ -37,5 +37,16 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'max-len': ['error', { code: 130 }],
     'arrow-parens': 'off',
+    'arrow-body-style': 'warn',
+    'import/extensions': [
+      'off',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
   },
 };

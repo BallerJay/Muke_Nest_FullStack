@@ -8,18 +8,27 @@ import { SIGN_NAME, TEMPLATE_CODE } from 'src/common/constants/aliyun';
 import { UserService } from '../user/user.service';
 import { msgClient } from 'src/shared/utils/msg';
 import * as dayjs from 'dayjs';
+import { CommonResult } from '@/common/dto/result.type';
+import {
+  CODE_NOT_EXPIRE,
+  SUCCESS,
+  UPDATE_ERROR,
+} from 'src/common/constants/code';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly UserService: UserService) {}
 
   // 查找
-  async sendCodeMsg(tel: string): Promise<boolean> {
+  async sendCodeMsg(tel: string): Promise<CommonResult> {
     const userInfo = await this.UserService.findCodeByMobile(tel);
     if (userInfo) {
       const diffTime = dayjs().diff(dayjs(userInfo.codeCreateTSAt));
       if (diffTime < 60 * 1000) {
-        return false;
+        return {
+          code: CODE_NOT_EXPIRE,
+          message: 'code 尚未过期',
+        };
       }
     }
     const code = getRandomCode();
@@ -40,9 +49,15 @@ export class AuthService {
           code,
         );
         if (updateResult) {
-          return true;
+          return {
+            code: SUCCESS,
+            message: 'ok',
+          };
         } else {
-          return false;
+          return {
+            code: UPDATE_ERROR,
+            message: '更新code 失败',
+          };
         }
       }
 
@@ -52,11 +67,16 @@ export class AuthService {
         codeCreateTSAt: new Date(),
       });
       if (createResult) {
-        return true;
+        return {
+          code: SUCCESS,
+          message: 'ok',
+        };
       } else {
-        return false;
+        return {
+          code: UPDATE_ERROR,
+          message: '新建账号失败',
+        };
       }
-      console.log(res);
     } catch (error) {
       // 如有需要，请打印 error
       Util.assertAsString(error.message);
