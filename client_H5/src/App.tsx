@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
+import { Button, Form, ImageUploader, Input } from 'antd-mobile';
 
 import { FIND, UPDATE } from './graphql/demo';
 
 import './App.css';
-import { Button, Form, ImageUploader, Input } from 'antd-mobile';
+
 import { useUploadOSS } from './hooks/useUploadOSS';
 
 const App: React.FC = () => {
@@ -32,20 +33,24 @@ const App: React.FC = () => {
 
   return (
     <div>
-      data: {JSON.stringify(data)}
-      <p>loading:{`${loading}`}</p>
+      data:
+      {JSON.stringify(data)}
+      <p>
+        loading:
+        {`${loading}`}
+      </p>
       <Form
-        layout='horizontal'
+        layout="horizontal"
         onFinish={handleClick}
         footer={
-          <Button block type='submit' color='primary' size='large'>
+          <Button block type="submit" color="primary" size="large">
             提交
           </Button>
         }>
-        <Form.Item name='name' label='姓名'>
+        <Form.Item name="name" label="姓名">
           <Input />
         </Form.Item>
-        <Form.Item name='desc' label='描述'>
+        <Form.Item name="desc" label="描述">
           <Input />
           {/* <input onChange={onChangeDescHandler} /> */}
         </Form.Item>

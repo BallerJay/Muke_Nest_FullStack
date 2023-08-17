@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import useMount from "./useMount";
+import { useCallback, useState } from 'react';
+import useMount from './useMount';
 
 interface IOptions {
   params: Record<string, string>;
@@ -32,7 +32,7 @@ const useRequest = (service: (params: Record<string, string>) => Promise<unknown
           options.onFail && options.onFail(reason);
         });
     },
-    [service]
+    [service],
   );
 
   useMount(() => {

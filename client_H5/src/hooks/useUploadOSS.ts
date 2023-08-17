@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
-import { GET_OSS_INFO } from "../graphql/oss";
+import { useQuery } from '@apollo/client';
+import { GET_OSS_INFO } from '../graphql/oss';
 
 export const useUploadOSS = () => {
   // 1. 获取到签名信息
@@ -10,14 +10,14 @@ export const useUploadOSS = () => {
     const formData = new FormData();
     const { getOSSInfo: returnData } = resultData;
     const key = `static/${file.name}`;
-    formData.append("key", `static/${file.name}`);
-    formData.append("policy", returnData.policy);
-    formData.append("OSSAccessKeyId", returnData.accessId);
-    formData.append("success_action_status", "200");
-    formData.append("signature", returnData.signature);
-    formData.append("file", file);
+    formData.append('key', `static/${file.name}`);
+    formData.append('policy', returnData.policy);
+    formData.append('OSSAccessKeyId', returnData.accessId);
+    formData.append('success_action_status', '200');
+    formData.append('signature', returnData.signature);
+    formData.append('file', file);
     const res = await fetch(returnData.host, {
-      method: "POST",
+      method: 'POST',
       body: formData,
     });
 
