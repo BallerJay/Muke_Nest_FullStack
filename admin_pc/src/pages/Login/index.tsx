@@ -40,10 +40,21 @@ const Login: React.FC = () => {
         title="Github"
         subTitle="全球最大的代码托管平台"
         onFinish={handleLogin}>
-        <Tabs centered activeKey={loginType} onChange={activeKey => setLoginType(activeKey as LoginType)}>
-          <Tabs.TabPane key="account" tab="账号密码登录" />
-          <Tabs.TabPane key="phone" tab="手机号登录" />
-        </Tabs>
+        <Tabs
+          centered
+          activeKey={loginType}
+          onChange={activeKey => setLoginType(activeKey as LoginType)}
+          items={[
+            {
+              key: 'account',
+              label: '账号密码登录',
+            },
+            {
+              key: 'phone',
+              label: '手机号登录',
+            },
+          ]}
+        />
         {loginType === 'account' && (
           <>
             <ProFormText

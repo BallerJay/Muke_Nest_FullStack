@@ -1,7 +1,7 @@
-import { useRoutes } from 'react-router-dom';
+import { RouteObject, useRoutes } from 'react-router-dom';
 import routers from './config';
 
-const rootRouter: any = [...routers];
+const rootRouter: RouteObject[] = [...routers];
 
 const Router: React.FC = () => {
   const routes = useRoutes(rootRouter);
